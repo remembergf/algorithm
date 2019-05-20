@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>初始化栈、使用栈进行进制之间的转换</title>
+    </head>
+    <body>
+    </body>
+    <script>
+        //初始化栈
+        function Stack() {
+            var items = [];
+            this.push = element => {
+                items.push(element);
+            };
+            this.pop = () => {
+                return items.pop();
+            };
+            this.peek = () => {
+                return items[items.length - 1];
+            };
+            this.isEmpty = () => {
+                return items.length == 0;
+            };
+            this.size = () => {
+                return items.length;
+            };
+            this.clear = () => {
+                items = [];
+            };
+            this.print = () => {
+                console.log(items.toString());
+            };
+        }
+
+        //将十进制转化为二进制
+        function divideBy2(num) {
+            var remStack = new Stack(),
+                rem,
+                binaryString = '';
+            while(num > 0){
+                rem = Math.floor(num % 2);
+                remStack.push(rem);
+                num = Math.floor(num / 2);
+            }
+
+            while(!remStack.isEmpty()){
+                binaryString += remStack.pop().toString();
+            }
+
+            console.log(binaryString);
+        }
+
+        function divideByBase(num, base){
+            var remStack = new Stack(),
+                rem,
+                binaryString = '';
+
+            while(num > 0){
+                rem = Math.floor(num % base);
+                remStack.push(rem);
+                num = Math.floor(num / base);
+            }
+
+            while(!remStack.isEmpty()){
+                binaryString += remStack.pop().toString();
+            }
+
+            console.log(binaryString);
+        }
+
+        divideBy2(10);
+        divideByBase(100, 8);
+    </script>
+</html>

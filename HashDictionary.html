@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>使用字典和散列表--非线性数据结构来实现存取</title>
+    </head>
+    <body>
+    </body>
+
+    <script>
+        function Dictionary() {
+            var items = {};
+
+            this.has = function (key) {
+                return key in items;
+            };
+            this.set = function (key, value) {
+                items[key] = value;
+            };
+            this.remove = function (key) {
+                if(this.has(key)){
+                    delete items[key];
+                    return true;
+                }
+                return false;
+            };
+            this.get = function (key) {
+                return this.has(key) ? items[key] : undefined;
+            };
+            this.values = function () {
+                var values = [];
+                for(var key in items) {
+                    if(this.has(key)){
+                        values.push(items[key]);
+                    }
+                }
+                return values;
+            };
+            this.getItems = function () {
+                return items;
+            };
+            this.print = function () {
+                for(var key in items) {
+                    console.log(`${key} : ${items[key]}`);
+                }
+            };
+        }
+
+        // 创建字典的实例
+        var dictionary = new Dictionary();
+        dictionary.set('yf', '123456');
+        dictionary.set('gf', '234567');
+        dictionary.set('hyj', '345678');
+        dictionary.remove('gf');
+        console.log(dictionary.get('yf'));
+        dictionary.print();
+
+
+        // 创建散列表的构造函数
+        function HashTable() {
+            var table = [];
+            // 创建散列函数，来获取到对应key值的ASCII码值
+            var loseloseHashCode = function (key) {
+                var hash = 0;
+                for(var i = 0; i < key.length; i++)
+                {
+                    hash += key.charCodeAt(i);
+                }
+                return hash % 37;
+            };
+            this.put = function (key, value){
+                var position = loseloseHashCode(key);
+                console.log(`${position} - ${key}`);
+                table[position] = value;
+            };
+            this.get = function (key) {
+                return table[loseloseHashCode(key)];
+            };
+            this.remove = function (key) {
+                table[loseloseHashCode(key)] = undefined;
+            };
+            this.print = function () {
+                for(let i = 0; i < table.length; i++)
+                {
+                    if(table[i] !== undefined)
+                    {
+                        console.log(`${i}: ${table[i]}`);
+                    }
+                }
+            };
+        }
+
+        var hash = new HashTable();
+        hash.put('yf', '123456');
+        hash.put('gf', '234567');
+        hash.put('nb', '345678');
+        hash.remove('nb');
+        console.log(hash.get('gf'));
+        hash.print();
+
+
+        // 总结： 在这两种的非序列性的数据结构中，字典就是在对象中对键值对进行的一系列操作;但是在散列表中，可能存在冲突性问题，键值的ASCII码可能会导致占据相同的结果，针对这个问题，有分离链接、线性探测、双散列法  -----  不过都是基于链表来进行操作的，即相同的ASCII码先来的进行占位，后面来的依次进行补位。
+        
+    </script>
+</html>

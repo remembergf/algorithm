@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>双向链表的初始化及操作</title>
+    </head>
+    <body>
+    </body>
+
+    <script>
+        function DoublyLinkedList() {
+            var Node = function(element) {
+                this.element = element;
+                this.next = null;
+                this.prev = null;
+            };
+
+            var length = 0,
+                head = null,
+                tail = null;
+
+            //在任意位置插入一个元素
+            this.insert = function (position, element) {
+                if(position > -1 && position <= length) {
+                    var node = new Node(element),
+                        previous,
+                        current = head,
+                        index = 0;
+
+                    if(position === 0)
+                    {
+                        if(!head){
+                            head = node;
+                            tail = node;
+                        }else{
+                            node.next = current;
+                            current.prev = node;
+                            head = node;
+                        }
+                    }else if(position === length){
+                        current = tail;
+                        current.next = node;
+                        node.prev = current;
+                        tail = node;
+                    }else{
+                        while(index < position)
+                        {
+                            previous = current;
+                            current = current.next;
+                        }
+
+                        node.next = current;
+                        previous.next = node;
+
+                        current.prev = node;
+                        node.prev = previous;
+                    }
+                    length++;
+                    return true;
+                }else{
+                    return false;
+                }
+            };
+
+            // 打印输出双链表
+            this.print = function() {
+                var current = head;
+                while(current){
+                    console.log(current.element);
+                    current = current.next;
+                }
+            };
+
+            // 从任意位置移除元素
+            this.removeAt = function(position) {
+                if(position > -1 && position < length)
+                {
+                    var current = head,
+                        previous,
+                        index;
+
+                    if(position === 0) {
+                        head = current.next;
+                        // 链表只有一个元素
+                        if(length === 1){
+                            tail = null;
+                            head = null;
+                        }else{
+                            head.prev = null;
+                        }
+                    }else if(position === length - 1){
+                        current = tail;
+                        tail = current.prev;
+                        tail.next = null;
+                    }else{
+                        while(index < position){
+                            previous = current;
+                            current = current.next;
+                        }
+
+                        previous.next = current.next;
+                        current.next.prev = previous;
+                    }
+
+                    length--;
+                    return current.element;
+                }else{
+                    return false;
+                }
+            };
+
+            // indexOf 方法
+            this.indexOf = function(element) {
+                var current = head;
+                var index = 0;
+                while(current){
+                    if(element == current.element){
+                        return index;
+                    }
+                    index++;
+                    current = current.next;
+                }
+                return -1;
+            };
+
+            //remove方法
+            this.remove = function(element) {
+                var index = this.indexOf(element);
+                return this.removeAt(index);
+            };
+
+        }
+
+        var list = new DoublyLinkedList();
+        list.insert(0, 12);
+        list.insert(1, 20);
+        list.insert(2, 30);
+        list.removeAt(0);
+        list.print();
+        var element = list.remove(20);
+        console.log(element);
+    </script>
+</html>

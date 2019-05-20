@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>单链表的创建及操作</title>
+    </head>
+    <body>
+    </body>
+
+    <script>
+        function LinkedList() {
+            var Node = function (element) {
+                this.element = element;
+                this.next = null;
+            };
+
+            var length = 0;
+            var head = null;
+            // 定义链表的方法
+            this.append = function (element) {
+                // 创建一个Node的实例
+                var node = new Node(element),
+                    current;
+                if(head == null){
+                    head = node;
+                }else{
+                    current = head;
+                    while(current.next){
+                        current = current.next;
+                    }
+
+                    current.next = node;
+                }
+
+                length++;
+            };
+
+            //删除链表中的某一个元素
+            this.removeAt = function (position) {
+                if(position > -1 && position < length)
+                {
+                    var current = head,
+                        previous,
+                        index = 0;
+                    if(position === 0)
+                    {
+                        head = current.next;
+                    }else{
+                        while(index < position){
+                            previous = current;
+                            current = current.next;
+                            index++;
+                        }
+
+                        //删除指定元素
+                        previous.next = current.next;
+                    }
+                    length--;
+                    return current.element;
+                }else{
+                    return null;
+                }
+            };
+
+            //输出链表
+            this.print = function() {
+                var current = head;
+                while((current)){
+                    console.log(current.element);
+                    current = current.next;
+                }
+            };
+
+            //在任意位置插入一个元素
+            this.insert = function(position, element) {
+                if(position > -1 && position < length)
+                {
+                    var node = new Node(element),
+                        previous,
+                        current = head,
+                        index = 0;
+                    if(position === 0)
+                    {
+                        node.next = current;
+                        head = node;
+                    }else{
+                        while(index < position)
+                        {
+                            previous = current;
+                            current = current.next;
+                            index++;
+                        }
+                        node.next = current;
+                        previous.next = node;
+                    }
+                    length++;
+                    return true;
+                }else{
+                    return false;
+                }
+            };
+
+            //将链表对象拼接成一个字符串
+            this.toString = function() {
+                var current = head,
+                    string = '';
+                while(current){
+                    string += current.element;
+                    current = current.next;
+                }
+                return string;
+            };
+
+            //重新编写indexOf的方法
+            this.indexOf = function(element) {
+                var current = head;
+                index = 0;
+
+                while(current) {
+                    if(element == current.element){
+                        return index;
+                    }
+                    index++;
+                    current = current.next;
+                }
+
+                return -1;
+            };
+
+            //移出指定位置的元素
+            this.remove = function(element) {
+                var index = this.indexOf(element);
+                return this.removeAt(index);
+            };
+
+            //判断链表的长度和是否为空
+            this.isEmpty = function() {
+                return length === 0;
+            };
+
+            this.size = function() {
+                return length;
+            };
+
+        }
+
+        var list = new LinkedList();
+        list.append(10);
+        list.append(12);
+        list.append(20);
+        list.removeAt(1);
+        list.insert(0, 11);
+        list.remove(11);
+        list.toString();
+        list.print();
+    </script>
+</html>
